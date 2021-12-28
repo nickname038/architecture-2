@@ -75,3 +75,15 @@ func ExamplePostfixToPrefix() {
 	// Output:
 	// - 1 / 2 * 3 - 4 5
 }
+
+func BenchmarkTransform(b *testing.B) {
+	stringToTransform := "1 2 3 4 * 5 6 - / - 7 + 8 9 * 10 - / +"
+
+	for k := 0; k < 10; k++ {
+		stringToTransform = stringToTransform + stringToTransform[1:len(stringToTransform)]
+
+		b.Run(fmt.Sprintf("stringLen=%d", len(stringToTransform)), func(b *testing.B) {
+			PostfixToPrefix(stringToTransform)
+		})
+	}
+}
